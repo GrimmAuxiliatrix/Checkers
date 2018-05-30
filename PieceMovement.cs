@@ -32,11 +32,11 @@ public class PieceMovement : MonoBehaviour {
 			if ((Mathf.Abs (targetX - posX)) != 2 || Mathf.Abs (targetY - posY) != 2) { 
 				return false; // checks that the target location is two spots away diagonally in any direction
 			}
-		} else if (pieceType == 1) { // 1 means red man, so the y coordinate change can only be positive(red men can only move upwards)
+		} else if (pieceType == 3) { // 3 means red man, so the y coordinate change can only be positive(red men can only move upwards)
 			if ((Mathf.Abs (targetX - posX)) != 2 || (targetY - posY != -2)) { 
 				return false; // checks that the target location is two spots away upward
 			}
-		} else if (pieceType == 3) { // 3 means black man, so the y coordinate can only be negative(black men can only move downwards)
+		} else if (pieceType == 1) { // 1 means black man, so the y coordinate can only be negative(black men can only move downwards)
 			if ((Mathf.Abs (targetX - posX)) != 2 || (targetY - posY != 2)) {
 				return false; // checks that the target location is two spots away downward
 			}
