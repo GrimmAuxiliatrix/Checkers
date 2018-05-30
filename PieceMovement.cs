@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,22 +23,22 @@ public class PieceMovement : MonoBehaviour {
 		{0,3,0,3,0,3,0,3}
 	};
 
-	private bool CanMove(int posX, int posY, int targetX, int targetY, bool isKing, bool PlayerSide) {
+	private bool CanMove(int posX, int posY, int targetX, int targetY) {
+		int pieceType = board [posX, posY]; // returns the type of piece that's being targeted in int form
+
 		if (board [targetX, targetY] != 0) { // checks that the target location is empty
 			return false;
-		} else if (isKing == true) { // Kings can have negative and position change in y position
+		} else if ((pieceType == 2) || (pieceType == 4)) { // Kings can have negative and position change in y position
 			if ((Mathf.Abs (targetX - posX)) != 2 || Mathf.Abs (targetY - posY) != 2) { 
 				return false; // checks that the target location is two spots away diagonally in any direction
 			}
-		} else if (isKing == false) { // Men can only have either positive or negative change in y position, depending on color
-			if (PlayerSide == true) { // if PlayerSide == true then red man is in motion; so y coordinate can only increase
-				if ((Mathf.Abs (targetX - posX)) != 2 || (targetY - posY != -2)) { 
-					return false; // checks that the target location is two spots away upward
-				}
-			} else if (PlayerSide == false) { // if PlayerSide == false then black man is in motion; so y coordinate can only decrase
-				if ((Mathf.Abs (targetX - posX)) != 2 || (targetY - posY != 2)) {
-					return false; // checks that the target location is two spots away downward
-				}
+		} else if (pieceType == 1) { // 1 means red man, so the y coordinate change can only be positive(red men can only move upwards)
+			if ((Mathf.Abs (targetX - posX)) != 2 || (targetY - posY != -2)) { 
+				return false; // checks that the target location is two spots away upward
+			}
+		} else if (pieceType == 3) { // 3 means black man, so the y coordinate can only be negative(black men can only move downwards)
+			if ((Mathf.Abs (targetX - posX)) != 2 || (targetY - posY != 2)) {
+				return false; // checks that the target location is two spots away downward
 			}
 		} 
 		return true;
