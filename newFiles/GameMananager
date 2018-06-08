@@ -1,0 +1,79 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GameMananager : MonoBehaviour {
+
+	public CellRow[] board = new CellRow[8];
+
+    public Material[] materials = new Material[4];
+
+
+	// Use this for initialization
+	void Start () {
+	
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
+
+
+    public bool validMove(Cell cell1, Cell cell2, CellRow[] board){
+		bool right = false; //is cell2 to the right of cell1? we don't know yet so default is false
+		if (cell2.getRow () != cell1.getRow () + 1 || cell2.getRow() == 7 || cell2.getCol() ==7 || cell2.getCol() == 0) {
+			return false;
+		}
+
+		if (cell2.getCol() == cell1.getCol() + 1) {
+			right = true;
+		} else if (cell2.getCol() != cell1.getCol() - 1) {
+			return false;
+		}
+
+		if (right && board [cell2.getCol () + 1].getCell(cell2.getCol () + 1).getType () > 1) {
+			return true;
+		} else if (!right && board [cell2.getCol () - 1].getCell(cell2.getCol () - 1).getType () > 1) {
+			return true;
+		} else {
+			return false;		
+		}
+	}
+
+    public void codeToGUI (CellRow[] board)
+    {
+        for(int i = 0; i < 8; i++)
+        {
+            CellRow cr = board[i];
+            for(int k = 0; k < 8; k++)
+            {
+                Cell c = cr.getCell(k);
+                int cellType = c.getType();
+                switch (cellType)
+                {
+                    case 1:
+                        c.transform.GetChild(0).gameObject.SetActive(false);
+                        break;
+                    case 2:
+                        c.transform.GetChild(0).gameObject.SetActive(true);
+                        c.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = materials[0];
+                        break;
+                    case 3:
+                        c.transform.GetChild(0).gameObject.SetActive(true);
+                        c.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = materials[1];
+                        break;
+                    case 4:
+                        c.transform.GetChild(0).gameObject.SetActive(true);
+                        c.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = materials[2];
+                        break;
+                    case 5:
+                        c.transform.GetChild(0).gameObject.SetActive(true);
+                        c.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = materials[3];
+                        break;
+                }
+            }
+
+        }
+    }
+}
