@@ -42,7 +42,7 @@ public class YEETonthePlayer : MonoBehaviour {
                         for (int i = -1; i < 2; i = i + 2) //to check both potential moves, I have a for statement here to iterate through both and create two recursive loops
                         {
                             CellRow[] copy = copyCR(board); //= board; //make a copy of the board so the original board stays unaffected
-                            if (validMove(getCell(copy, x, y), getCell(copy, x + i, y + 1), copy)) //basic idea is check to see if move is possible... 
+                            if (validPlayerMove(getCell(copy, x, y), getCell(copy, x + i, y + 1), copy)) //basic idea is check to see if move is possible... 
                             {
                                 getCell(copy, x, y).setType(1); //and then alter the board accordingly...
                                 getCell(copy, x + i, y + 1).setType(2);
@@ -67,7 +67,7 @@ public class YEETonthePlayer : MonoBehaviour {
                             CellRow[] copy = board; //this is all the same idea as the last thing
                             if (i == 0) //This is what my life has come to
                             {
-                                if (validMove(getCell(copy, x, y), getCell(copy, x - 1, y + 1), copy)) //basic idea is check to see if move is possible... 
+                                if (validPlayerMove(getCell(copy, x, y), getCell(copy, x - 1, y + 1), copy)) //basic idea is check to see if move is possible... 
                                 {
                                     getCell(copy, x, y).setType(1); //and then alter the board accordingly...
                                     getCell(copy, x - 1, y + 1).setType(3);
@@ -75,7 +75,7 @@ public class YEETonthePlayer : MonoBehaviour {
                                     beta = Mathf.Min(beta, pvar);
                                     if (alpha >= beta) { break; }
                                 }
-                                else if (validMove(getCell(copy, x, y), getCell(copy, x - 2, y + 2), copy)) //basic idea is check to see if move is possible... 
+                                else if (validPlayerKill(getCell(copy, x, y), getCell(copy, x - 2, y + 2), copy)) //basic idea is check to see if move is possible... 
                                 {
                                     getCell(copy, x, y).setType(1); //and then alter the board accordingly...
                                     getCell(copy, x - 2, y + 2).setType(3);
@@ -86,7 +86,7 @@ public class YEETonthePlayer : MonoBehaviour {
                             }
                             else if (i == 1)
                             {
-                                if (validMove(getCell(copy, x, y), getCell(copy, x + 1, y + 1), copy)) //basic idea is check to see if move is possible... 
+                                if (validPlayerMove(getCell(copy, x, y), getCell(copy, x + 1, y + 1), copy)) //basic idea is check to see if move is possible... 
                                 {
                                     getCell(copy, x, y).setType(1); //and then alter the board accordingly...
                                     getCell(copy, x + 1, y + 1).setType(3);
@@ -94,7 +94,7 @@ public class YEETonthePlayer : MonoBehaviour {
                                     beta = Mathf.Min(beta, pvar);
                                     if (alpha >= beta) { break; }
                                 }
-                                else if (validMove(getCell(copy, x, y), getCell(copy, x + 2, y + 2), copy)) //basic idea is check to see if move is possible... 
+                                else if (validPlayerKill(getCell(copy, x, y), getCell(copy, x + 2, y + 2), copy)) //basic idea is check to see if move is possible... 
                                 {
                                     getCell(copy, x, y).setType(1); //and then alter the board accordingly...
                                     getCell(copy, x + 2, y + 2).setType(3);
@@ -105,7 +105,7 @@ public class YEETonthePlayer : MonoBehaviour {
                             }
                             else if (i == 2)
                             {
-                                if (validMove(getCell(copy, x, y), getCell(copy, x - 1, y - 1), copy)) //basic idea is check to see if move is possible... 
+                                if (validPlayerMove(getCell(copy, x, y), getCell(copy, x - 1, y - 1), copy)) //basic idea is check to see if move is possible... 
                                 {
                                     getCell(copy, x, y).setType(1); //and then alter the board accordingly...
                                     getCell(copy, x - 1, y - 1).setType(3);
@@ -113,7 +113,7 @@ public class YEETonthePlayer : MonoBehaviour {
                                     beta = Mathf.Min(beta, pvar);
                                     if (alpha >= beta) { break; }
                                 }
-                                else if (validMove(getCell(copy, x, y), getCell(copy, x - 2, y - 2), copy)) //basic idea is check to see if move is possible... 
+                                else if (validPlayerKill(getCell(copy, x, y), getCell(copy, x - 2, y - 2), copy)) //basic idea is check to see if move is possible... 
                                 {
                                     getCell(copy, x, y).setType(1); //and then alter the board accordingly...
                                     getCell(copy, x - 2, y - 2).setType(3);
@@ -124,7 +124,7 @@ public class YEETonthePlayer : MonoBehaviour {
                             }
                             else
                             {
-                                if (validMove(getCell(copy, x, y), getCell(copy, x + 1, y - 1), copy)) //basic idea is check to see if move is possible... 
+                                if (validPlayerMove(getCell(copy, x, y), getCell(copy, x + 1, y - 1), copy)) //basic idea is check to see if move is possible... 
                                 {
                                     getCell(copy, x, y).setType(1); //and then alter the board accordingly...
                                     getCell(copy, x + 1, y - 1).setType(3);
@@ -132,7 +132,7 @@ public class YEETonthePlayer : MonoBehaviour {
                                     beta = Mathf.Min(beta, pvar);
                                     if (alpha >= beta) { break; }
                                 }
-                                else if (validMove(getCell(copy, x, y), getCell(copy, x + 2, y - 2), copy)) //basic idea is check to see if move is possible... 
+                                else if (validPlayerKill(getCell(copy, x, y), getCell(copy, x + 2, y - 2), copy)) //basic idea is check to see if move is possible... 
                                 {
                                     getCell(copy, x, y).setType(1); //and then alter the board accordingly...
                                     getCell(copy, x + 2, y - 2).setType(3);
@@ -283,8 +283,57 @@ public class YEETonthePlayer : MonoBehaviour {
     }
 
    
-    int aiShit(int[,] board, int turn) //this is the board evaluation that you can try to implement but I have an idea I thinks
+    int aiShit(int[,] board) //this is the board evaluation that you can try to implement but I have an idea I thinks
     {
+        int score = 0;
+        for (int y = 0; y < 8; y++)
+        {
+            for (int x = 0; x < 8; x = x + 2) 
+            {
+                if (y % 2 != 0) { x = 1; }
+                Cell eval = getCell(board, x, y); // This is the basis for the scoring algorithm
+                if (eval.getType() == 2) //Player piece, since this is the AI's perspective points will be deducted
+                {
+                    score -= 1000; //points for existing
+                    if (x == 0 || x == 7) //points for the safe wall position
+                    {
+                        score -= 300; 
+                    }
+                    if (y > 2) //points for moving farther up
+                    {
+                        score -= 100 * (y - 2);
+                    }
+                    if (validPlayerKill(eval, getCell(board, x - 1, y + 1), board)) //points if can kill by moving leftward
+                    {
+                        score -= 2000; //points for the kill
+                        if (x == 1) //point bonus for moving to the wall
+                        {
+                            score -= 300;
+                        }
+                    }
+                    if (validPlayerKill(eval, getCell(board, x + 1, y + 1), board)) //points if can kill by moving rightward
+                    {
+                        score -= 2000; //points for the kill
+                        if (x == 6) //point bonus for moving to the wall
+                        {
+                            score -= 300;
+                        }
+                    }
+                }
+                else if (getCell(board, x, y).getType() == 3) //player king
+                {
+                    score -= 1500;
+                }
+                else if (getCell(board, x, y).getType() == 4) //AI piece, points will be added
+                {
+                    score += 1000;
+                }
+                else if (getCell(board, x, y).getType() == 5) //AI king
+                {
+                    score += 1500;
+                }
+            }
+        }
         return 1;
     }
 
